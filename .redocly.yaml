@@ -1,0 +1,6 @@
+apiDefinitions:
+  myApi: ./apis/openapi.yaml
+
+lint:
+  extends:
+    - recommended
