@@ -1,7 +1,0 @@
-apis:
-  ConfigApisProperties : 
-    root: ./apis/openapi.yaml
-
-# lint:
-#   extends:
-#     - recommended
