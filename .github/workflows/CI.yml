@@ -1,1 +1,51 @@
+name: Merge main into release
 
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout main branch
+      uses: actions/checkout@v3
+      with:
+        ref: main
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11' # Modifiez selon la version de Python nécessaire
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Lint and Test
+      run: |
+        # Linting (ex: avec flake8 ou pylint)
+        pip install flake8
+        flake8 your_fastapi_project/
+        # Test (ajustez selon votre outil de test, par ex. pytest)
+        pip install pytest
+        pytest
+
+    - name: Build project
+      run: |
+        uvicorn your_fastapi_project.main:app --host 127.0.0.1 --port 8000 --reload &
+        sleep 5
+        curl -f http://127.0.0.1:8000/healthcheck # Adaptez selon vos endpoints
+
+    - name: Checkout release branch
+      run: git fetch origin release && git checkout release
+
+    - name: Merge main into release
+      run: |
+        git merge main
+        git push origin release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
