@@ -1,6 +1,7 @@
-apiDefinitions:
-  myApi: ./apis/openapi.yaml
+apis:
+  ConfigApisProperties : 
+    root: ./apis/openapi.yaml
 
-lint:
-  extends:
-    - recommended
+# lint:
+#   extends:
+#     - recommended
